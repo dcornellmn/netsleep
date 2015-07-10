@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SleeperService")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SleepService")]
+[assembly: AssemblyDescription("Windows Service for NetSleep protocol")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SleeperService")]
+[assembly: AssemblyProduct("NetSleep")]
 [assembly: AssemblyCopyright("Copyright © Dave Cornell 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

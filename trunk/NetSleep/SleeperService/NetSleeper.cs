@@ -8,7 +8,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DCornell.NetSleep.SleeperService
+namespace DCornell.NetSleep
 {
     public partial class NetSleeper : ServiceBase
     {

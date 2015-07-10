@@ -1,4 +1,4 @@
-﻿namespace DCornell.NetSleep.SleeperService
+﻿namespace DCornell.NetSleep
 {
     partial class NetSleeper
     {
