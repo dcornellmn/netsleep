@@ -7,8 +7,8 @@
     <ProjectGuid>{FFB46624-B1B1-4942-8966-C28949DBE3E5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DCornell.NetSleep.SleeperService</RootNamespace>
-    <AssemblyName>SleeperService</AssemblyName>
+    <RootNamespace>DCornell.NetSleep</RootNamespace>
+    <AssemblyName>SleepService</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
