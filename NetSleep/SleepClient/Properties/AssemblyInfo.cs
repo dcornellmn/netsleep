@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("SleepClient")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Enclos Corp.")]
-[assembly: AssemblyProduct("SleepClient")]
-[assembly: AssemblyCopyright("Copyright © Enclos Corp. 2015")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("NetSleep")]
+[assembly: AssemblyCopyright("Copyright © 2015 Dave Cornell")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
