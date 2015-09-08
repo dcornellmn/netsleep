@@ -24,7 +24,7 @@ namespace DCornell.NetSleep
 
         public SleepServer(int port)
         {
-            Contract.Requires<ArgumentException>(port >= IPEndPoint.MinPort && port <= IPEndPoint.MaxPort);
+            Contract.Requires<ArgumentOutOfRangeException>(port >= IPEndPoint.MinPort && port <= IPEndPoint.MaxPort);
 
             this.port = port;
         }
@@ -36,8 +36,11 @@ namespace DCornell.NetSleep
 
         public void Start()
         {
-            listenerTask = Task.Factory.StartNew(Listener, TaskCreationOptions.LongRunning);
-        }
+            if (listenerTask == null || listenerTask.Status != TaskStatus.Running)
+            {
+                listenerTask = Task.Factory.StartNew(Listener, TaskCreationOptions.LongRunning);
+            }
+       }
 
         protected void Listener()
         {
@@ -71,7 +74,7 @@ namespace DCornell.NetSleep
 
         private void StopListener()
         {
-
+            Stop();
         }
 
         public void Resume()
