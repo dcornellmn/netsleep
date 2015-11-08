@@ -53,6 +53,14 @@ namespace DCornell.NetSleep
                 {
                     Socket clientSocket = listener.AcceptSocket();
                     // TODO: Implement network communication
+                    NetworkStream ns = new NetworkStream(clientSocket);
+                    byte ch = 0;
+                    byte[] cmd = new byte[256];
+                    for (int i = 0; ch != 13 && i < cmd.Length; i++)
+                    {
+                        ns.Read(cmd, i, 1);
+                    }
+                    // process command
                     clientSocket.Close();
                 }
             }
