@@ -14,6 +14,15 @@ namespace DCornell.NetSleep
         private int port;
         private Task listenerTask;
 
+        // interaction strings
+        protected const string CRLF = "\r\n";
+        protected const string SUCCESS = "OK" + CRLF;
+        protected const string NOTIMPL = "ERR NOTIMPL" + CRLF;
+        protected const string BADCMD = "ERR BADCMD" + CRLF;
+        protected const string PUNT = "ERR SERVER" + CRLF;
+        protected const string VERSION = "VER 1" + CRLF;
+        protected const string CAPABILITIES = "COMMANDS CAPA HIBER PWROFF QUIT REBOOT SLEEP VER" + CRLF + CRLF;
+
         public SleepServer()
             : this(9296)
         {
@@ -29,6 +38,11 @@ namespace DCornell.NetSleep
         protected bool GoToSleep()
         {
             return SleepInvoker.Suspend();
+        }
+
+        protected bool Hibernate()
+        {
+            return SleepInvoker.Hibernate();
         }
 
         public void Start()
@@ -48,12 +62,12 @@ namespace DCornell.NetSleep
                 listener.Start();
                 while (true)
                 {
-                    // TODO: Fork the client handling code to a new thread and go back to listening
                     Socket clientSocket = listener.AcceptSocket();
                     NetworkStream ns = new NetworkStream(clientSocket);
+                    // TODO: Fork the client handling code to a new thread and go back to listening
 
 #if DEBUG
-                    IPEndPoint remote = (IPEndPoint) clientSocket.RemoteEndPoint;
+                    IPEndPoint remote = (IPEndPoint)clientSocket.RemoteEndPoint;
                     string remaddress = remote.Address.ToString();
                     string remport = remote.Port.ToString();
                     Console.WriteLine("Connection from " + remaddress + ":" + remport);
@@ -61,6 +75,7 @@ namespace DCornell.NetSleep
 
                     bool close = false; // conversation finished, close connection
                     bool action_sleep = false; // go to sleep after conversation
+                    bool action_hiber = false; // hibernate after conversation
                     bool action_reboot = false; // reboot after conversation
                     bool action_shutdown = false; // power down after conversation
                     while (!close)
@@ -77,41 +92,45 @@ namespace DCornell.NetSleep
 
                         // process command
                         char[] separators = { ' ', '\t', '\r', '\n' };
-                        string reply = "ERR SERVER\r\n"; // server's reply to client
+                        string reply = PUNT; // server's reply to client
                         string[] cmdWords = Encoding.ASCII.GetString(cmd, 0, i).Split(separators, 3, StringSplitOptions.RemoveEmptyEntries);
                         switch (cmdWords[0])
                         {
                             case "SLEEP":
-                            case "HIBER":
                                 action_sleep = true;
-                                reply = "OK\r\n";
+                                reply = SUCCESS;
+                                close = true;
+                                break;
+                            case "HIBER":
+                                action_hiber = true;
+                                reply = SUCCESS;
                                 close = true;
                                 break;
                             case "PWROFF":
                             case "REBOOT":
-                                reply = "ERR NOTIMPL\r\n";
+                                reply = NOTIMPL;
                                 close = true;
                                 break;
                             case "VER":
-                                reply = "VER 1\r\n";
+                                reply = VERSION;
                                 close = false;
                                 break;
                             case "CAPA":
                             case "HELP":
-                                reply = "COMMANDS CAPA HIBER PWROFF QUIT REBOOT SLEEP VER\r\n\r\n";
+                                reply = CAPABILITIES;
                                 close = false;
                                 break;
                             case "AUTH":
                             case "HASH":
-                                reply = "ERR NOTIMPL\r\n";
+                                reply = NOTIMPL;
                                 close = false;
                                 break;
                             case "QUIT":
-                                reply = "OK\r\n";
+                                reply = SUCCESS;
                                 close = true;
                                 break;
                             default:
-                                reply = "ERR BADCMD\r\n";
+                                reply = BADCMD;
                                 close = true;
                                 break;
                         }
@@ -132,10 +151,17 @@ namespace DCornell.NetSleep
 #endif
                     clientSocket.Close();
 
-                    // TODO: perform sleep action if command was valid
+                    // perform an action if one was validated
+                    // TODO: Handle this on a separate thread and wrap with calls to Suspend() and Resume()
                     if (action_sleep)
                     {
                         Console.WriteLine("Simulated call to GoToSleep()");
+                        //GoToSleep();
+                    }
+                    else if (action_hiber)
+                    {
+                        Console.WriteLine("Simulated call to Hibernate()");
+                        //Hibernate()
                     }
                 }
             }
