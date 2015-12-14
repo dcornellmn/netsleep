@@ -25,7 +25,7 @@ namespace SleepClient
     {
         int port;
         IPAddress ipaddr;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,17 +33,17 @@ namespace SleepClient
 
         private void sleepButton_Click(object sender, RoutedEventArgs e)
         {
-            sendCommand("SLEEP\n");
+            sendCommand("SLEEP\r\n");
         }
 
         private void hibernateButton_Click(object sender, RoutedEventArgs e)
         {
-            sendCommand("HIBER\n");
+            sendCommand("HIBER\r\n");
         }
 
         private void versionButton_Click(object sender, RoutedEventArgs e)
         {
-            sendCommand("VER\n");
+            sendCommand("VER\r\n");
         }
 
         private void sendCommand(string command)
@@ -61,7 +61,7 @@ namespace SleepClient
                 TcpClient tcp = new TcpClient(ipaddr.ToString(), port);
                 NetworkStream ns = tcp.GetStream();
 
-                resultsTextBox.Text+=string.Format("Connected. Sending %s...\n",command);
+                resultsTextBox.Text += string.Format("Connected. Sending %s...\n", command);
 
                 // Send command string (as byte array)
                 var cmdbytes = Encoding.ASCII.GetBytes(command);
@@ -70,7 +70,7 @@ namespace SleepClient
                 // Listen for response
                 byte[] reply = new byte[256];
                 ns.Read(reply, 0, 255);
-                
+
                 resultsTextBox.Text += "Response:\n" + Encoding.Unicode.GetString(reply).Trim('\0');
             }
             catch (Exception ex)
