@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -30,8 +29,10 @@ namespace DCornell.NetSleep
 
         public SleepServer(int port)
         {
-            Contract.Requires<ArgumentOutOfRangeException>(port >= IPEndPoint.MinPort && port <= IPEndPoint.MaxPort);
-
+            if (port >= IPEndPoint.MinPort && port <= IPEndPoint.MaxPort)
+            {
+                throw new ArgumentOutOfRangeException("Invalid TCP port: " + port.ToString());
+            }
             this.port = port;
         }
 
