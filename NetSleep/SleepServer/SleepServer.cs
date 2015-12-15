@@ -29,7 +29,7 @@ namespace DCornell.NetSleep
 
         public SleepServer(int port)
         {
-            if (port >= IPEndPoint.MinPort && port <= IPEndPoint.MaxPort)
+            if (port < IPEndPoint.MinPort || port > IPEndPoint.MaxPort)
             {
                 throw new ArgumentOutOfRangeException("Invalid TCP port: " + port.ToString());
             }

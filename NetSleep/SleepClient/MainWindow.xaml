@@ -20,7 +20,7 @@
             </Grid>
         </GroupBox>
         <Label Content="Results:" HorizontalAlignment="Left" Margin="10,187,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="resultsTextBox" HorizontalAlignment="Left" Margin="10,218,0,0" TextWrapping="Wrap" Width="125" Height="105" VerticalAlignment="Top" Grid.ColumnSpan="2" IsReadOnly="True"/>
+        <TextBox x:Name="resultsTextBox" HorizontalAlignment="Left" Margin="10,218,0,0" TextWrapping="Wrap" Width="125" Height="105" VerticalAlignment="Top" Grid.ColumnSpan="2" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
 
     </Grid>
 </Window>
