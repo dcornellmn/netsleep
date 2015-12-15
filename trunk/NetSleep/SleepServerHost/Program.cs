@@ -35,7 +35,7 @@ namespace DCornell.NetSleep.SleepServerHost
 
             var srv = new SleepServer(port);
             srv.Start();
-            Console.WriteLine("Server started on port %d. Press Enter to exit...", port);
+            Console.WriteLine("Server started on port {0}. Press Enter to exit...", port);
             Console.ReadLine();
             srv.Stop();
             Console.WriteLine("Server stopped.");

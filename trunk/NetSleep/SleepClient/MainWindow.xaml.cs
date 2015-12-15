@@ -48,41 +48,44 @@ namespace SleepClient
 
         private void sendCommand(string command)
         {
-            try
+            if (validateInputs())
             {
-                // Prevent additional clicks
-                sleepButton.IsEnabled = false;
-                hibernateButton.IsEnabled = false;
-                versionButton.IsEnabled = false;
+                try
+                {
+                    // Prevent additional clicks
+                    sleepButton.IsEnabled = false;
+                    hibernateButton.IsEnabled = false;
+                    versionButton.IsEnabled = false;
 
-                resultsTextBox.Text = string.Format("Connecting to %s:%d...\n", ipaddr.ToString(), port);
+                    resultsTextBox.Text = string.Format("Connecting to {0}:{1}...\n", ipaddr.ToString(), port);
 
-                // TODO: Add async handling here
-                TcpClient tcp = new TcpClient(ipaddr.ToString(), port);
-                NetworkStream ns = tcp.GetStream();
+                    // TODO: Add async handling here
+                    TcpClient tcp = new TcpClient(ipaddr.ToString(), port);
+                    NetworkStream ns = tcp.GetStream();
 
-                resultsTextBox.Text += string.Format("Connected. Sending %s...\n", command);
+                    resultsTextBox.Text += string.Format("Connected. Sending {0}...\n", command);
 
-                // Send command string (as byte array)
-                var cmdbytes = Encoding.ASCII.GetBytes(command);
-                ns.Write(cmdbytes, 0, cmdbytes.Length);
+                    // Send command string (as byte array)
+                    var cmdbytes = Encoding.ASCII.GetBytes(command);
+                    ns.Write(cmdbytes, 0, cmdbytes.Length);
 
-                // Listen for response
-                byte[] reply = new byte[256];
-                ns.Read(reply, 0, 255);
+                    // Listen for response
+                    byte[] reply = new byte[256];
+                    ns.Read(reply, 0, 255);
 
-                resultsTextBox.Text += "Response:\n" + Encoding.Unicode.GetString(reply).Trim('\0');
-            }
-            catch (Exception ex)
-            {
-                resultsTextBox.Text += "Caught " + ex.GetType().Name;
-            }
-            finally
-            {
-                // Re-enable button clicks
-                sleepButton.IsEnabled = true;
-                hibernateButton.IsEnabled = true;
-                versionButton.IsEnabled = true;
+                    resultsTextBox.Text += "Response:\n" + Encoding.Unicode.GetString(reply).Trim('\0');
+                }
+                catch (Exception ex)
+                {
+                    resultsTextBox.Text += "Caught " + ex.GetType().Name + "\n" + ex.ToString();
+                }
+                finally
+                {
+                    // Re-enable button clicks
+                    sleepButton.IsEnabled = true;
+                    hibernateButton.IsEnabled = true;
+                    versionButton.IsEnabled = true;
+                }
             }
         }
 
@@ -94,7 +97,7 @@ namespace SleepClient
             bool pass = true;
 
             // Validate port
-            if (!string.IsNullOrWhiteSpace(portstr))
+            if (string.IsNullOrWhiteSpace(portstr))
             {
                 port = 9296;
             }
